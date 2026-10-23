@@ -10,10 +10,10 @@ public class demo2 {
          * 不等：快指针存到慢指针的位置
          */
         int[] arr = new int[]{1, 2, 2, 2, 2, 3, 3, 3};
-
+        
         int slow = 0;
         int fast = 1;
-
+        
         while (fast < arr.length) {
             // 判断两指针值是否相同
             if (arr[slow] == arr[fast]) {
@@ -26,7 +26,7 @@ public class demo2 {
                 fast++;
             }
         }
-
+        
         // 此时 arr[0..slow] 就是去重后的结果，长度为 slow + 1
         for (int i = 0; i <= slow; i++) {
             System.out.print(arr[i] + " ");
