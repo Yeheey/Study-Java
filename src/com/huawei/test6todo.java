@@ -2,9 +2,9 @@ package com.huawei;
 
 import java.util.List;
 
-public class test6 {
+public class test6todo {
     /*
-    
+    6.【26.9.2-3】无人机巡检航线规划
     题目描述：
     某电力公司使用无人机Q对n个电力塔进行巡检。每个电力塔i位于坐标(xi,yi)，无人机园从基地(坐标(0,0)出发，
     需要依次飞达每个电力塔完成巡检后结束任务，无需返回基地。
