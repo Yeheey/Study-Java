@@ -1,8 +1,9 @@
 package com.huawei;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class test6todo {
+public class test6 {
     /*
     6.【26.9.2-3】无人机巡检航线规划
     题目描述：
@@ -21,10 +22,40 @@ public class test6todo {
     static int solve(int n, List<List<Integer>> nums) {
         // n:电力塔数量，1≤n≤15
         // xi,yi:第i个电力塔的坐标，0≤xi,yi≤200
-        int res = 0;
+        int[] x = new int[n];
+        int[] y = new int[n];
+        for (int i = 0; i < n; i++) {
+            x[i] = nums.get(i).get(0);
+            y[i] = nums.get(i).get(1);
+        }
         
+        int full = (1 << n) - 1;
+        int[][] dp = new int[1 << n][n];
+        for (int[] row : dp) Arrays.fill(row, Integer.MAX_VALUE / 2);
         
-        return res;
+        // 从基地(0,0)出发到第i个塔
+        for (int i = 0; i < n; i++) {
+            dp[1 << i][i] = Math.abs(x[i]) + Math.abs(y[i]);
+        }
+        
+        for (int mask = 1; mask <= full; mask++) {
+            for (int last = 0; last < n; last++) {
+                if ((mask & (1 << last)) == 0) continue;
+                if (dp[mask][last] >= Integer.MAX_VALUE / 2) continue;
+                for (int next = 0; next < n; next++) {
+                    if ((mask & (1 << next)) != 0) continue;
+                    int newMask = mask | (1 << next);
+                    int dist = Math.abs(x[last] - x[next]) + Math.abs(y[last] - y[next]);
+                    dp[newMask][next] = Math.min(dp[newMask][next], dp[mask][last] + dist);
+                }
+            }
+        }
+        
+        int ans = Integer.MAX_VALUE;
+        for (int i = 0; i < n; i++) {
+            ans = Math.min(ans, dp[full][i]);
+        }
+        return ans;
     }
     
     static void main() {

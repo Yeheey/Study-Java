@@ -3,7 +3,7 @@ package com.huawei;
 import java.util.ArrayList;
 import java.util.List;
 
-public class test9extension {
+public class test9_lei_extension {
 /*
     题目名称：零钱组合总和（DFS 回溯经典题）
     题目描述:
