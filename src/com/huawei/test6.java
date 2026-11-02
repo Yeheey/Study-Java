@@ -5,7 +5,7 @@ import java.util.List;
 
 public class test6 {
     /*
-    6.【26.9.2-3】无人机巡检航线规划
+    6.【26.9.2-3】【二维状态压缩DP】无人机巡检航线规划-test27
     题目描述：
     某电力公司使用无人机Q对n个电力塔进行巡检。每个电力塔i位于坐标(xi,yi)，无人机园从基地(坐标(0,0)出发，
     需要依次飞达每个电力塔完成巡检后结束任务，无需返回基地。
@@ -19,6 +19,7 @@ public class test6 {
     输出最短总距离(整数)
     */
     
+    // dp[mask][last] = 从基地(0,0)出发，访问完 mask 中的塔，且当前停在塔 last 的最短飞行距离
     static int solve(int n, List<List<Integer>> nums) {
         // n:电力塔数量，1≤n≤15
         // xi,yi:第i个电力塔的坐标，0≤xi,yi≤200
@@ -29,20 +30,24 @@ public class test6 {
             y[i] = nums.get(i).get(1);
         }
         
-        int full = (1 << n) - 1;
+        int full = (1 << n) - 1; // n 个 1，表示"全部巡检完"
         int[][] dp = new int[1 << n][n];
         for (int[] row : dp) Arrays.fill(row, Integer.MAX_VALUE / 2);
         
         // 从基地(0,0)出发到第i个塔
         for (int i = 0; i < n; i++) {
+            // 基地(0,0) → 塔 i 的曼哈顿距离
             dp[1 << i][i] = Math.abs(x[i]) + Math.abs(y[i]);
         }
         
         for (int mask = 1; mask <= full; mask++) {
             for (int last = 0; last < n; last++) {
+                // last 必须属于当前集合，否则状态无意义
                 if ((mask & (1 << last)) == 0) continue;
+                // 不可达剪枝
                 if (dp[mask][last] >= Integer.MAX_VALUE / 2) continue;
                 for (int next = 0; next < n; next++) {
+                    // next 必须未访问
                     if ((mask & (1 << next)) != 0) continue;
                     int newMask = mask | (1 << next);
                     int dist = Math.abs(x[last] - x[next]) + Math.abs(y[last] - y[next]);
