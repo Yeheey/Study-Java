@@ -10,7 +10,7 @@ public class test32 {
     请实现语义化版本号比较器，对输入版本号字符串列表按下面规则处理，返回最大的版本号(若存在相等最大版本号，则返回第一个版本号)，若存在不合规格式则返回空字符串。
     
     优先级比较:从左至右比较Major Minor Patch数字大小，大的优先;
-    若Major Minor Patch相同，则继续对比先行版信息(第一个-号为分隔符四，有信息大于无信息);
+    若Major Minor Patch相同，则继续对比先行版信息(第一个-号为分隔符，有信息大于无信息);
     如果先行版信息相同，则对比构建信息(第一个+号为分隔符，有信息大于无信息);依次类推;单个元素对比规则如下:
     先行版和构建信息如果包含符号.，先按.切分然后逐一对比，切分后首个元素大的优先，如果首元素相同则比较第二个，
     ·纯数值:按数值大的优先
@@ -28,10 +28,134 @@ public class test32 {
     */
     
     static String solve(String[] input) {
-        decompose(input[0]);
         String res = "";
-        
+        if (input.length == 0) {
+            return "";
+        }
+        if (input.length == 1) {
+            return input[0];
+        }
+        for (int i = 1; i < input.length; i++) {
+            res = compare(input[i - 1], input[i]);
+        }
         return res;
+    }
+    
+    // 比较版本号大小 返回较大的版本号字符串
+    static String compare(String a, String b) {
+        String[] res1 = decompose(a);
+        String[] res2 = decompose(b);
+        
+        StringBuilder result = new StringBuilder();
+        
+        for (int i = 0; i < res1.length; i++) {
+            // 1.比较Major
+            if (Integer.parseInt(res1[0]) > Integer.parseInt(res2[0])) {
+                return a;
+            } else if (Integer.parseInt(res1[0]) < Integer.parseInt(res2[0])) {
+                return b;
+            } else {
+                // 2.比较Minor
+                if (Integer.parseInt(res1[1]) > Integer.parseInt(res2[1])) {
+                    return a;
+                } else if (Integer.parseInt(res1[1]) < Integer.parseInt(res2[1])) {
+                    return b;
+                } else {
+                    // 3.比较Patch
+                    if (Integer.parseInt(res1[2]) > Integer.parseInt(res2[2])) {
+                        return a;
+                    } else if (Integer.parseInt(res1[2]) < Integer.parseInt(res2[2])) {
+                        return b;
+                    } else {
+                        // 4.比较可选先行版
+                        String resInfo1 = compareInfo(res1[3], res2[3]);
+                        if (!resInfo1.equals("")) {
+                            result = new StringBuilder(resInfo1.equals(res1[3]) ? a : b);
+                        } else {
+                            // 5.比较构建信息
+                            String resInfo2 = compareInfo(res1[4], res2[4]);
+                            result = new StringBuilder(resInfo2.equals(res1[4]) ? a : b);
+                        }
+                    }
+                }
+            }
+        }
+        
+        return result.toString();
+    }
+    
+    // 比较先行版本号+构建信息
+    static String compareInfo(String a, String b) {
+        StringBuilder resInfo = new StringBuilder();
+        if (a.isEmpty() && b.isEmpty()) {
+            return resInfo.toString();
+        } else if (a.isEmpty() || b.isEmpty()) {
+            // 有信息>无信息
+            resInfo = new StringBuilder(a.isEmpty() ? b : a);
+        } else {
+            // 都有信息
+            int resV = compareVersion(a, b);
+            if (resV > 0) {
+                resInfo = new StringBuilder(a);
+            } else if (resV < 0) {
+                resInfo = new StringBuilder(b);
+            } else {
+                return resInfo.toString();
+            }
+        }
+        
+        return resInfo.toString();
+    }
+    
+    /**
+     * 比较两个版本字符串
+     *
+     * @param v1 版本1
+     * @param v2 版本2
+     * @return >0:v1更大；=0相等；<0:v2更大
+     */
+    public static int compareVersion(String v1, String v2) {
+        // 按 . 切分
+        String[] arr1 = v1.split("\\.");
+        String[] arr2 = v2.split("\\.");
+        
+        int minLen = Math.min(arr1.length, arr2.length);
+        for (int i = 0; i < minLen; i++) {
+            String s1 = arr1[i];
+            String s2 = arr2[i];
+            
+            int cmp;
+            if (isAllDigit(s1) && isAllDigit(s2)) {
+                // 两段都是纯数字：按数值比较
+                long n1 = Long.parseLong(s1);
+                long n2 = Long.parseLong(s2);
+                cmp = Long.compare(n1, n2);
+            } else {
+                // 混合串：ASCII字典序（原生compareTo正好是Unicode，英文符号数字等价ASCII）
+                cmp = s1.compareTo(s2);
+            }
+            if (cmp != 0) {
+                return cmp;
+            }
+            // 当前段相等，继续下一段
+        }
+        // 前面全部相同：内容多（数组更长）的优先
+        return Integer.compare(arr1.length, arr2.length);
+    }
+    
+    /**
+     * 判断字符串是否全部由数字组成（纯数值段）
+     */
+    public static boolean isAllDigit(String s) {
+        if (s == null || s.isEmpty()) {
+            return false;
+        }
+        for (char ch : s.toCharArray()) {
+            if (!Character.isDigit(ch)) {
+                return false;
+            }
+        }
+        return true;
     }
     
     // 分解每一个部分
@@ -74,7 +198,8 @@ public class test32 {
     }
     
     static void main() {
-        String[] input = {"1.0.0-alpha", "1.0.0.alpha.alpha", "1.0.0-alpha.beta", "1.0.0-alpha.beta-A+C"}; // output:438
+        String[] input = {"1.0.0-alpha", "1.0.0-alpha.beta", "1.0.0-alpha.beta-A", "1.0.0-alpha.beta-A+C"};
         System.out.print(solve(input));
+        // 预期输出：1.0.0-alpha.beta-A+C
     }
 }

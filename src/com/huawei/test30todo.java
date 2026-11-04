@@ -1,6 +1,6 @@
 package com.huawei;
 
-public class test30 {
+public class test30todo {
     /*
     30.【26.8.5-3】IPv4 等长子网划分与自动分配系统
     题目描述
