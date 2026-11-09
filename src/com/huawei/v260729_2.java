@@ -26,15 +26,33 @@ public class v260729_2 {
     */
     
     static List<Integer> solve(int[][] matrix, int interval) {
-        List<Integer> stack = new ArrayList<>();
+        List<Integer> res = new ArrayList<>();
         
-        return stack;
+        for (int i = 0; i < matrix.length; i++) {
+            int curTime = matrix[i][0];
+            int curVal = matrix[i][1];
+            int curStart = curTime - interval;
+            
+            // 扫描这个时间点之前的点
+            for (int j = 0; j <= i; j++) {
+                int oldTime = matrix[j][0];
+                int oldVal = matrix[j][1];
+                
+                if (curStart <= oldTime && oldTime <= curTime && oldVal > curVal) {
+                    curVal = oldVal;
+                }
+            }
+            
+            // 加入结果
+            res.add(curVal);
+        }
+        return res;
     }
     
     static void main() {
         int[][] matrix = {{1, 10}, {6, 12}, {3, 5}, {10, 7}, {5, 8}};
         int interval = 4;
-        
+        // [10,12,10,12,10]
         System.out.print(solve(matrix, interval));
     }
 }
