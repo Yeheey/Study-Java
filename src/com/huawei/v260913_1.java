@@ -1,11 +1,12 @@
 package com.huawei;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class v260913_1 {
     /*
-    【26.09.13-1】手机桌面整理
+    【26.9.13-1】手机桌面整理
     题目描述
     手机系统管理一个App列表，按最近使用App操作排序;
     用户可以对App进行如下操作：
@@ -33,16 +34,80 @@ public class v260913_1 {
     输出描述
     按顺序统计OPEN和UNINSTALL操作的返回值
     */
+    
+    
     static List<Integer> manageApps(int capacity, String[] operations) {
-        List<Integer> ans = new ArrayList<>();
         
+        List<Integer> ans = new ArrayList<>();
+        // 用于存key:APP名称和 value:操作次数
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        // 用于存APP的排放顺序
+        List<String> list = new ArrayList<>();
+        
+        for (int i = 0; i < operations.length; i++) {
+            String op = operations[i].split(" ")[0];
+            String name = operations[i].split(" ")[1];
+            
+            if (op.equals("OPEN")) {
+                // 1.打开
+                if (!isExist(list, name)) {
+                    ans.add(-1);
+                } else {
+                    list.remove(name);
+                    list.addFirst(name);
+                    int count = map.get(name) + 1;
+                    map.put(name, count);
+                    ans.add(count);
+                }
+            } else if (op.equals("INSTALL")) {
+                // 📌容量为0 不可安装
+                if (capacity <= 0) {
+                    continue;
+                }
+                // 2.安装
+                if (isExist(list, name)) {
+                    // 安装已存在的 头插
+                    list.remove(name);
+                    list.addFirst(name);
+                } else {
+                    // 如果不存在 看看容量 还能放就头插
+                    if (list.size() < capacity) {
+                        list.addFirst(name);
+                        map.put(name, 0);
+                    } else {
+                        // 容量不够 卸载最不常用 在头插
+                        map.remove(list.getLast());
+                        map.put(name, 0);
+                        list.removeLast();
+                        list.addFirst(name);
+                    }
+                }
+            } else {
+                // 3.卸载
+                if (!isExist(list, name)) {
+                    ans.add(-1);
+                } else {
+                    ans.add(map.get(name));
+                    list.remove(name);
+                    map.remove(name);
+                    
+                }
+            }
+        }
+        
+        System.out.println(list);
+        map.forEach((k, v) -> System.out.println(k + " -> " + v));
         return ans;
+    }
+    
+    static Boolean isExist(List<String> list, String name) {
+        return list.contains(name);
     }
     
     static void main() {
         int capacity = 3;
         String[] operations = {"INSTALL WeChat", "INSTALL Map", "OPEN Map", "OPEN Map", "INSTALL WeChat", "INSTALL Music", "INSTALL Mail", "OPEN Map", "UNINSTALL Music", "UNINSTALL Map"};
         // [1,2,-1,0,-1]
-        System.out.println(manageApps(capacity, operations));
+        System.out.print(manageApps(capacity, operations));
     }
 }
