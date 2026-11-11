@@ -3,7 +3,7 @@ package com.huawei;
 import java.util.ArrayList;
 import java.util.List;
 
-public class v260830_3_lei_example {
+public class v260830_3_lei_extension_answer {
     static List<List<Integer>> res = new ArrayList<>();
     static int[] mCoins;
     static int[] mNums;

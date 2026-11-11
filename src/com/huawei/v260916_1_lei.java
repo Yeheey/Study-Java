@@ -13,6 +13,8 @@ public class v260916_1_lei {
     static void dfs(int start, long curVal, int[] nums, long limit) {
         for (int i = start; i < nums.length; i++) {
             // 卫语句：再乘会超过 n，后面质数更大，直接停
+            // 卫语句 = 提前 return /continue/break，把异常、非法条件先拦截，减少嵌套 if-else**
+            // 核心思想：失败优先，尽早返回，不要把主逻辑包在大 `if` 里面。
             if (curVal * nums[i] > limit) break;
             
             // long next = curVal * nums[i];

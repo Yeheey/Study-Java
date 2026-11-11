@@ -18,8 +18,10 @@ public class v260916_1_ysy {
     */
     
     static int ans = 1;
+    static int len = 0;
     
     static int solve(int n, int m, int[] nums) {
+        len = m;
         dfs(0, nums, 1, n);
         return ans;
     }
@@ -31,7 +33,7 @@ public class v260916_1_ysy {
      * limit:上限
      */
     static void dfs(int idx, int[] nums, long curVal, int limit) {
-        for (int i = idx; i < nums.length; i++) {
+        for (int i = idx; i < len; i++) {
             if (curVal * nums[i] > limit) {
                 break;
             }
