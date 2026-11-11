@@ -2,7 +2,7 @@ package com.huawei;
 
 import java.util.Arrays;
 
-public class v260729_3_todo {
+public class v260729_3 {
     /*
      路口等待时间
      题目描述

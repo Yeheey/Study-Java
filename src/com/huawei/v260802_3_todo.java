@@ -34,16 +34,82 @@ public class v260802_3_todo {
     输出描述
     输出满足条件的最少分段数（最少调息次数）。若无解则输出 −1。
     */
-    
-    static String solve(String[] input) {
-        String res = "";
-        
-        return res;
+    static int[] buildPrefix(int[] skills, long limit, int maxCount, int inf) {
+        int n = skills.length;
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        long sum = 0;
+        int left = 0;
+        for (int right = 0; right < n; right++) {
+            sum += skills[right];
+            while (left <= right && (right - left + 1 > maxCount || sum > limit)) {
+                sum -= skills[left++];
+            }
+            if (left > right || dp[left] >= inf) {
+                dp[right + 1] = inf;
+            } else {
+                dp[right + 1] = dp[left] + 1;
+            }
+        }
+        return dp;
     }
     
+    static int[] buildSuffix(int[] skills, long limit, int maxCount, int inf) {
+        int n = skills.length;
+        int[] dp = new int[n + 1];
+        dp[n] = 0;
+        long sum = 0;
+        int right = n - 1;
+        for (int left = n - 1; left >= 0; left--) {
+            sum += skills[left];
+            while (right >= left && (right - left + 1 > maxCount || sum > limit)) {
+                sum -= skills[right--];
+            }
+            if (right < left || dp[right + 1] >= inf) {
+                dp[left] = inf;
+            } else {
+                dp[left] = dp[right + 1] + 1;
+            }
+        }
+        return dp;
+    }
     
-    static void main() {
-        String[] input = {"1.0.0-alpha", "1.0.0.alpha.alpha", "1.0.0-alpha.beta", "1.0.0-alpha.beta-A+C"}; // output:438
-        System.out.print(solve(input));
+    static int solve(int k, int m, int w, int[] skills) {
+        // 单个技能超过爆发上限时，无论如何都无法释放
+        int n = skills.length;
+        int inf = n + 1;
+        long burstLimit = 2L * k;
+        for (int value : skills) {
+            if (value > burstLimit) return -1;
+        }
+        // prefix 和 suffix 分别记录左右两侧在普通上限下的最少分段数
+        int[] prefix = buildPrefix(skills, k, m, inf);
+        int[] suffix = buildSuffix(skills, k, m, inf);
+        int answer = prefix[n];
+        // 枚举唯一一次爆发覆盖的连续 w 个技能
+        if (w <= m) {
+            long sum = 0;
+            for (int i = 0; i < w; i++) sum += skills[i];
+            for (int left = 0; left + w <= n; left++) {
+                int right = left + w;
+                if (sum <= burstLimit && prefix[left] < inf && suffix[right] < inf) {
+                    answer = Math.min(answer, prefix[left] + 1 + suffix[right]);
+                }
+                if (right < n) {
+                    sum -= skills[left];
+                    sum += skills[right];
+                }
+            }
+        }
+        return answer >= inf ? -1 : answer;
+    }
+    
+    void main() {
+        int k = 5;
+        int m = 3;
+        int w = 2;
+        int[] skills = {3, 4, 3, 4};
+        // 3
+        System.out.print(solve(k, m, w, skills));
     }
 }
