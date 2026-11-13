@@ -1,6 +1,7 @@
 package com.huawei;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 public class v260816_2 {
     /*
@@ -10,8 +11,8 @@ public class v260816_2 {
     每个信道对应掩码中的一个二进制位(位置为1表示信道可用，位置为0表示信道被占用)。
     掩码状态编码以不同进制格式(二进制、十进制、十六进制)存储在配置文件中，由64位无符号整数表示(二进制从低位到高位对应信道0到信道63)，
     掩码的输入格式为带进制标识的字符串:
-        二进制字符串:以ob开头(如ob1011);
-        十六进制字符串:以ox开头(如ox1A3);
+        二进制字符串:以0b开头(如ob1011);
+        十六进制字符串:以0x开头(如ox1A3);
         十进制字符串:无特殊前缀(如255)。
     
     为了优化资源利用率，需计算两组可用信道的集合:交集、并集，以及统计连续可用信道的最大长度(连续1的最长子串）。
@@ -72,8 +73,6 @@ public class v260816_2 {
         
         res[2] = BigInteger.valueOf(maxLen);
         
-        System.out.println(res[0].toString());
-        System.out.println(res[1].toString());
         System.out.println(maxLen);
         
         return res;
@@ -83,6 +82,6 @@ public class v260816_2 {
         // "0b1011,0b1101"
         // [9,15,4]
         String s = "0b1011,0b1101";
-        System.out.print(solve(s));
+        System.out.print(Arrays.toString(solve(s)));
     }
 }

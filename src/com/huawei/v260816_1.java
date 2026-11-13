@@ -54,7 +54,11 @@ public class v260816_1 {
     }
     
     static void main() {
-        // 3.9
         System.out.println(solve(3000, 1500, 0, 100));
+        // 3.9
+        System.out.println(solve(3000, 1500, 70, 85));
+        // 0.3
+        System.out.println(solve(3000, 1500, 80, 100));
+        // 0.7
     }
 }
