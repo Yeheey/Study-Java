@@ -19,13 +19,13 @@ public class v260823_3 {
         输出描述：
         一个整数，表示未被淹没的高地区域数量。
         */
-    private static int num;
-    private static int height = 0;
-    private static int row = 0;
-    private static int col = 0;
-    private static boolean[][] visited;
-    private static int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}, {-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
-    private static int[][] matrix;
+    static int num;
+    static int height = 0;
+    static int row = 0;
+    static int col = 0;
+    static boolean[][] visited;
+    static int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}, {-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
+    static int[][] matrix;
     
     static int solve(int x, int m, int n, int[][] mat) {
         num = 0;

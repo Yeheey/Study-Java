@@ -1,8 +1,8 @@
 package com.huawei;
 
-public class v260823_1 {
+public class v260823_1_ysy {
     /*
-     13.【26.8.23-1】直线冲刺
+    【26.8.23-1】直线冲刺--【模拟计算】-6min
     题目描述:
     在一条长度为n的直线跑道上，每个格子的坐标从0到n-1，每个格子上写着一个整数，存放在数组tiles中。这些数字有特殊含义:
     tiles[i]=0，代表这是普通空地，可以通过;
@@ -19,28 +19,34 @@ public class v260823_1 {
     */
     
     static int solve(int[] tiles) {
-        int res = 0;
+        int steps = 0;
+        int cur = 0;
         int n = tiles.length;
-        int curIndex = 0;
+        // 不知道循环几次 也不知道什么时候结束 那就先做循环 在循环体内判断结束时间
         while (true) {
-            // 已经到达或越过终点
-            if (curIndex >= n-1) {
-                return res;
+            // 通关返回步数
+            if (cur >= n - 1) {
+                return steps;
             }
-            if (tiles[curIndex] == -1) {
+            // 踩到陷阱
+            if (tiles[cur] == -1) {
                 return -1;
-            } else if (tiles[curIndex] == 0) {
-                curIndex += 1;
-            } else {
-                curIndex += 2;
             }
-            res++;
+            if (tiles[cur] == 0) {
+                steps += 1;
+                cur += 1;
+            }
+            if (tiles[cur] == 1) {
+                steps += 1;
+                cur += 2;
+            }
         }
     }
     
     
     public static void main(String[] args) {
         int[] tiles = {1, 0, 1, -1, 0, 0};
+        // 3
         System.out.print(solve(tiles));
     }
 }
