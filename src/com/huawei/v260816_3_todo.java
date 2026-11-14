@@ -2,7 +2,7 @@ package com.huawei;
 
 import java.util.*;
 
-public class v260816_3 {
+public class v260816_3_todo {
     /*
     21.【26.8.16-3】智能家居模式调度优化 AI
     题目描述
@@ -39,7 +39,6 @@ public class v260816_3 {
         if (n == 0) {
             return 0;
         }
-        ;
         
         // ---------- 1. 时间离散化 ----------
         TreeSet<Integer> set = new TreeSet<>(); // 用于存每个时间点

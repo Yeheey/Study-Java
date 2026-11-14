@@ -3,7 +3,7 @@ package com.huawei;
 import java.math.BigInteger;
 
 public class v260819_2 {
-/*
+    /*
     16.【26.8.19-2】大整数位序反转
     题目描述:
     小华是一名嵌入式开发工程师，在处理芯片寄存器数据时，经常需要对超多位数据进行位翻转操作。
@@ -22,9 +22,8 @@ public class v260819_2 {
         }
         String binary = num.toString(2); // 转二进制
         String reversed = new StringBuilder(binary).reverse().toString(); // 反转
-        String res = new BigInteger(reversed, 2).toString();   // 二进制字符串转十进制
         
-        return res;
+        return new BigInteger(reversed, 2).toString(); // 二进制字符串转十进制
     }
     
     

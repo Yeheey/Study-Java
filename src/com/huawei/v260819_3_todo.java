@@ -4,9 +4,9 @@ package com.huawei;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-public class v260819_3 {
+public class v260819_3_todo {
     /*
-    17.【26.8.19-3】点亮战争迷雾
+    17.【26.8.19-3】点亮战争迷雾--【DFS】
     题目描述：
     有一张二叉树的地图，每一个节点都被战争迷雾所覆盖。在二叉树节点上插上一个侦察守卫，可以照亮该节点自身以及它的父节点和它的子节点的战争迷雾。
     在每个节点上插上侦察守卫的成本并不一样，用cost[i]表示节点i上的成本，每个节点的成本是正整数。

@@ -41,15 +41,16 @@ public class v260819_1 {
     }
     
     static void main() {
-        // int[] power = {3, 1, 2, 4, 1};
-        // int target = 5;
-        // int max_hour = 3;
+        int[] power1 = {3, 1, 2, 4, 1};
+        int target1 = 5;
+        int max_hour1 = 3;
         // output 8
+        System.out.println(solve(power1, target1, max_hour1));
         
         int[] power = {0, 0, 0};
         int target = 0;
         int max_hour = 2;
         // output 5
-        System.out.print(solve(power, target, max_hour));
+        System.out.println(solve(power, target, max_hour));
     }
 }
