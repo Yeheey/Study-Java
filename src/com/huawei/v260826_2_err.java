@@ -40,22 +40,41 @@ public class v260826_2_err {
         int r = s.length() - 1;
         
         while (l < r) {
+            if (s.charAt(l) == s.charAt(r)) {
+                l++;
+                r--;
+            }
             if (s.charAt(l) != s.charAt(r)) {
-                // 删左
+                // 📌bug2：相同的字符可能删除也合法 防止遗漏
+                // 删左：从失配点向左，连续相同的字符都可以删
                 boolean isOkLeft = isPalindrome(s, l + 1, r);
                 if (isOkLeft) {
-                    res.add(l);
+                    char c = s.charAt(l);
+                    int i = l;
+                    while (i >= 0) {
+                        if (s.charAt(i) != c) {
+                            break;
+                        }
+                        i--;
+                    }
+                    for (int k = i + 1; k <= l; k++) {
+                        res.add(k);
+                    }
                 }
-                // 删右
+                // 删右：从失配点向右，连续相同的字符都可以删
                 boolean isOkRight = isPalindrome(s, l, r - 1);
                 if (isOkRight) {
-                    res.add(r);
+                    char c = s.charAt(r);
+                    for (int i = r; i < s.length(); i++) {
+                        if (s.charAt(i) != c) {
+                            break;
+                        }
+                        res.add(i);
+                    }
                 }
                 // 📌bug1：只能删一次 删完就退出来
                 break;
             }
-            l++;
-            r--;
         }
         
         // 如果本身就是回文串 会导致while遍历完都不删减的情况

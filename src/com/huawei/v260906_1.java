@@ -1,6 +1,7 @@
 package com.huawei;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,8 +28,8 @@ public class v260906_1 {
     输出描述:
     一个整数，表示最少暂存操作次数。
     */
-
-    /*
+    
+    /**
      * n是总数量
      * nums是货物
      */
@@ -69,11 +70,56 @@ public class v260906_1 {
         
     }
     
+    // 解法2:cursor写的
+    public static int stepCounts1(int n, int[] nums) {
+        int[] order = Arrays.copyOf(nums, n);
+        Arrays.sort(order);
+        
+        int[] main = Arrays.copyOf(nums, n);
+        int mainTop = n - 1;
+        int[] temp = new int[n];
+        int tempTop = -1;
+        int moves = 0;
+        for (int target : order) {
+            if (contains(main, mainTop, target)) {
+                while (main[mainTop] != target) {
+                    temp[++tempTop] = main[mainTop--];
+                    moves++;
+                }
+                mainTop--;
+                continue;
+            }
+            while (temp[tempTop] != target) {
+                main[++mainTop] = temp[tempTop--];
+                moves++;
+            }
+            tempTop--;
+        }
+        return moves;
+    }
+    
+    static boolean contains(int[] stack, int top, int target) {
+        for (int i = 0; i <= top; i++) {
+            if (stack[i] == target) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     static void main() {
         int n = 6;
         List<Integer> nums = List.of(6, 5, 2, 4, 3, 1);
-        
-        System.out.print(stepCounts(n, nums));
+        // 解法1
+        System.out.println(stepCounts(n, nums)); // 3
+        // 解法2
+        System.out.println(stepCounts1(6, new int[]{6, 5, 2, 4, 3, 1})); // 3
+        System.out.println(stepCounts1(3, new int[]{1, 2, 3})); // 2
+        System.out.println(stepCounts1(4, new int[]{2, 3, 4, 5})); // 3
+        System.out.println(stepCounts1(4, new int[]{4, 3, 2, 1})); // 0
+        System.out.println(stepCounts1(5, new int[]{5, 4, 3, 2, 1})); // 0
+        System.out.println(stepCounts1(2, new int[]{2, 1})); // 0
+        System.out.println(stepCounts1(2, new int[]{1, 2})); // 1
     }
     
     
