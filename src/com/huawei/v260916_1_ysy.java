@@ -33,12 +33,16 @@ public class v260916_1_ysy {
      * limit:上限
      */
     static void dfs(int idx, int[] nums, long curVal, int limit) {
+        if (idx == len) {
+            return;
+        }
+        
         for (int i = idx; i < len; i++) {
-            if (curVal * nums[i] > limit) {
-                break;
-            }
-            ans++;
-            dfs(i, nums, curVal * nums[i], limit);
+            if (curVal * nums[i] > limit) break;
+            curVal = curVal * nums[i];
+            dfs(i, nums, curVal, limit);
+            ans += 1;
+            curVal /= nums[i];
         }
     }
     
@@ -46,6 +50,7 @@ public class v260916_1_ysy {
         int n = 15;
         int m = 3;
         int[] nums = {2, 3, 5};
+        // 11
         System.out.print(solve(n, m, nums));
     }
 }

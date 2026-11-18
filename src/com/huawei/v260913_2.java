@@ -1,5 +1,6 @@
 package com.huawei;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.Objects;
 
 public class v260913_2 {
     /*
-    【26.9.13-2】受限序列重排
+    【26.9.13-2】受限序列重排--【数学】--抄答案--不太会
     题目描述
     给定一个包含 n 个整数的数组 nums 和一个整数 k，你需要将数组 nums 中的所有元素重新排列，
     生成一个新的序列数组，其中下标第 k−1 个元素和下标第 k 个元素不能数值相同。
@@ -23,47 +24,9 @@ public class v260913_2 {
     输出符合条件的不同数组个数；无法构造出满足条件的数组时输出 0。
     */
     
-    // 暴力枚举会超时！
-    static int countArrangements(int[] nums, int k) {
-        HashSet<List<Integer>> set = new HashSet<>();
-        backtrack(nums, 0, set, k);
-        
-        return set.size();
-    }
-    
-    static void backtrack(int[] nums, int start, HashSet<List<Integer>> set, int k) {
-        // 递归的出口 存自身
-        if (start == nums.length) {
-            List<Integer> r = new ArrayList<>();
-            for (int num : nums) {
-                r.add(num);
-            }
-            // 剪枝
-            if (!Objects.equals(r.get(k - 1), r.get(k))) {
-                set.add(r);
-            }
-            return;
-        }
-        
-        // 从start开始交换递归
-        for (int i = start; i < nums.length; i++) {
-            swap(i, start, nums);
-            backtrack(nums, start + 1, set, k);
-            // 回溯
-            swap(i, start, nums);
-        }
-        
-        
-    }
-    
-    static void swap(int i, int j, int[] nums) {
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
-    }
-    
-    // 方法2
-    static long solve(int[] nums, int k) {
+    // 暴力枚举会超时！ DFS递归也会超时
+    // 方法：数学思路 和答案一样
+    static long countArrangements(int[] nums, int k) {
         int n = nums.length;
         // 边界判断：数组长度小于2，不存在一对相邻位置；k越界直接返回0
         if (n < 2 || k < 1 || k >= n) {
@@ -121,11 +84,17 @@ public class v260913_2 {
     static void main() {
         int[] nums = {2, 2, 3};
         int k = 1;
-        System.out.print(countArrangements(nums, k));
+        System.out.println("ans1====" +countArrangements(nums, k));
         // 2 322 223
+
+        int[] nums1 = {1, 1, 2, 2};
+        int k1 = 2;
+        // 4
+        System.out.println("ans2====" + countArrangements(nums1, k1));
         
-        System.out.println(solve(nums, k));
+        int[] nums2 = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+        int k2 = 14;
+        // 4
+        System.out.println("ans3====" + countArrangements(nums2, k2));
     }
-    
-    
 }
