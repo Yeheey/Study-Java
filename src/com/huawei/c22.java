@@ -8,7 +8,8 @@ public class c22 {
     
     解释：
     空闲区域是由连通的’O’组成的区域，位于边界的’O’可以构成入口，
-    单入口空闲区域即有且只有一个位于边界的’O’作为入口的由连通的’O’组成的区域。 如果两个元素在水平或垂直方向相邻，则称它们是“连通”的。
+    单入口空闲区域：有且只有一个位于边界的’O’作为入口的由连通的’O’组成的区域。
+    如果两个元素在水平或垂直方向相邻，则称它们是“连通”的。
     
     输入描述
     第一行输入为两个数字，第一个数字为行数m，第二个数字为列数n，两个数字以空格分隔，1<=m,n<=200。
@@ -24,43 +25,41 @@ public class c22 {
     static boolean[][] visited;// 标记访问过的'O'
     static int row;
     static int col;
-    static int curArea = 0; // 当前区域面积
+    // 维护总体
     static int count = 0; // 合法区域数量
     static int maxArea = 0;// 最大区域面积
     static int maxCount = 0; // 最大区域面积的个数
-    // 记录入口坐标
+    // 记录当前入口坐标
     static int eRow;
     static int eCol;
-    // 记录这个区域的入口数量
-    static int eCount = 0;
+    static int eCount = 0; // 记录这个区域的入口数量
+    static int curArea = 0; // 当前区域面积
     
     static void dfs(int r, int c, char[][] input) {
-        // 1.递归出口
-        if (r < 0 || c < 0 || r >= row || c >= col || visited[r][c] || input[r][c] == 'X') {
+        // 递归出口:索引越界 or 已经访问过了
+        if (r < 0 || r >= row || c < 0 || c >= col || visited[r][c] || input[r][c] == 'X') {
             return;
         }
         
-        // 标记访问 当前面积++
         if (input[r][c] == 'O') {
+            // 标记已访问
             visited[r][c] = true;
+            // 记录当前面积
             curArea++;
+            // 记录入口数量 顺便更新入口值
+            if (r == 0 || r == row - 1 || c == 0 || c == col - 1) {
+                eCount++;
+                eRow = r;
+                eCol = c;
+            }
         }
         
-        // 2.入口个数统计 符合边界 记录入口坐标
-        if (r == 0 || c == 0 || r == row - 1 || c == col - 1) {
-            eCount++;
-            eRow = r;
-            eCol = c;
-        }
-        
-        // 3.四连通DFS
+        // 四连通 上下左右 继续深度搜索
         for (final int[] dir : directions) {
             int newI = r + dir[0];
             int newJ = c + dir[1];
             dfs(newI, newJ, input);
         }
-        
-        
     }
     
     static String solve(int m, int n, char[][] input) {
@@ -68,46 +67,47 @@ public class c22 {
         row = m;
         col = n;
         visited = new boolean[row][col];
+        maxArea = 0;
+        maxCount = 0;
+        count = 0;
+        String res;
         
-        // 2.递归
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                // 当前是'O' 且未被访问过 才开始深度搜索
-                if (input[i][j] == 'O' && !visited[i][j]) {
-                    // 递归前 把当前区域的属性清空
-                    maxArea = 0;
-                    maxCount = 0;
-                    count = 0;
+        for (int r = 0; r < row; r++) {
+            for (int c = 0; c < col; c++) {
+                // 只有是O且没被访问过 才进行深度搜索
+                if (input[r][c] == 'O' && !visited[r][c]) {
+                    // 在本次递归之前 清理当前数据
                     curArea = 0;
                     eCount = 0;
                     eRow = -1;
                     eCol = -1;
-                    dfs(i, j, input);
-                    // 4.本次递归结束 统计面积 清0
-                    if (eCount == 1) {
+                    // 递归
+                    dfs(r, c, input);
+                    // 递归结束 整理数据 合法单入口 count++
+                    if (eRow != -1 && eCol != -1 && eCount == 1) {
+                        count++;
+                    }
+                    
+                    if (count > 0) {
                         if (curArea > maxArea) {
-                            // 当前面积严格大于max 维护max 记录入口坐标
                             maxArea = curArea;
                             maxCount = 1;
-                        }
-                        if (curArea == maxArea) {
-                            // 当前面积 == max 计数+1
+                        } else if (curArea == maxArea) {
                             maxCount++;
                         }
                     }
+                    
                 }
-                
             }
         }
         
-        // 3.递归结束 整理合法答案
-        String res = "";
-        if (maxCount == 1) {
-            res += eRow + " " + eCol + " " + maxArea;
-        } else if (count > 1 || maxCount > 1) {
-            res += maxArea;
+        // 输出结果
+        if (maxCount == 1 && eRow != -1 && eCol != -1) {
+            res = eRow + " " + eCol + " " + maxArea;
+        } else if (maxCount > 1) {
+            res = String.valueOf(maxArea);
         } else {
-            res += "NULL";
+            res = "NULL";
         }
         
         return res;

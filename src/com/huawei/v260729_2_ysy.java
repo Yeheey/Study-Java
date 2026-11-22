@@ -25,17 +25,85 @@ public class v260729_2_ysy {
     −10^9≤value≤10^9
     */
     
-    static List<Integer> solve(int[][] matrix, int interval) {
+    /**
+     * data数据流 长度1-1000 值-10^9-10^9
+     * interval回溯时间 值1-10^9
+     */
+    static List<Integer> solve(int[][] data, int interval) {
         List<Integer> res = new ArrayList<>();
+        int len = data.length;
+        
+        res.add(data[0][1]); // 第一个一定加进去
+        if (len == 1) {
+            return res;
+        }
+        // 长度大于1
+        for (int i = 1; i < len; i++) {
+            // 本次[curTimeStart,curTime] 值curValue
+            int curTime = data[i][0];
+            int curTimeStart = curTime - interval;
+            int curValue = data[i][1];
+            
+            // 回溯之前的时间点
+            for (int j = 0; j < i; j++) {
+                int preTime = data[j][0];
+                int preValue = data[j][1];
+                
+                // 旧的结束时间落在本次时间段内 && 旧值>新值 维护更新新值
+                if (curTimeStart <= preTime && preTime <= curTime && curValue < preValue) {
+                    curValue = preValue;
+                }
+            }
+            
+            res.add(curValue);
+        }
         
         return res;
     }
     
     static void main() {
+        // 回溯区间是 [当前时刻 - interval, 当前时刻]，只看已经到达的点
+        
         int[][] matrix = {{1, 10}, {6, 12}, {3, 5}, {10, 7}, {5, 8}};
         int interval = 4;
-        // [10,12,10,12,10]
-        System.out.print(solve(matrix, interval));
+        // [10, 12, 10, 12, 10]
+        System.out.println(solve(matrix, interval));
+        
+        int[][] one = {{5, -3}};
+        // [-3]
+        System.out.println(solve(one, 1));
+        
+        int[][] onEdge = {{1, 4}, {4, 8}};
+        // 时刻 1 落在 [4-3, 4] 上，计入。[4, 8]
+        System.out.println(solve(onEdge, 3));
+        
+        int[][] justOut = {{1, 4}, {5, 1}};
+        // 时刻 1 比 5-3 早 1 秒，不计入。[4, 1]
+        System.out.println(solve(justOut, 3));
+        
+        int[][] negative = {{1, -5}, {2, -1}, {3, -8}};
+        // [-5, -1, -1]
+        System.out.println(solve(negative, 10));
+        
+        int[][] future = {{8, 3}, {1, 20}, {9, 4}};
+        // 处理时刻 1 时，时刻 8 还在未来。[3, 20, 20]
+        System.out.println(solve(future, 10));
+        
+        int[][] expire = {{1, 100}, {2, 1}, {4, 3}, {5, 2}};
+        // 到时刻 4，100 已经滑出 [2, 4]。[100, 100, 3, 3]
+        System.out.println(solve(expire, 2));
+        
+        int[][] sameTime = {{3, 1}, {3, 9}, {3, 4}};
+        // [1, 9, 9]
+        System.out.println(solve(sameTime, 5));
+        
+        int[][] bigInterval = {{5, 1}, {1, 50}, {4, 7}};
+        // interval 很大，未来的时刻 5 仍然不能算进时刻 1 和 4。[1, 50, 50]
+        System.out.println(solve(bigInterval, 1_000_000_000));
+        
+        int[][] mixed = {{10, 6}, {1, 100}, {12, 3}, {11, 9}};
+        // [6, 100, 6, 9]
+        System.out.println(solve(mixed, 4));
     }
 }
 
