@@ -1,11 +1,10 @@
 package com.huawei;
 
-import java.util.Arrays;
 import java.util.HashSet;
 
 public class c32 {
     /*
-    【精准核酸检测】
+    【精准核酸检测】--【DFS+邻接表】--50min
     题目描述
     为了达到新冠疫情精准防控的需要，为了避免全员核酸检测带来的浪费，需要精准圈定可能被感染的人群。
     现在根据传染病流调以及大数据分析，得到了每个人之间在时间、空间上是否存在轨迹的交叉。
@@ -26,17 +25,22 @@ public class c32 {
     static boolean[] visited;
     static HashSet<Integer> set;
     
-    static void dfs(int index, int n, int[][] matrix) {
-        int[] tmp = matrix[index];// 邻接表
-        set.add(index); // index 是病人下标编号
+    static void dfs(int idx, int n, int[][] matrix) {
+        // 病人接触的人 1-接触 0-没接触
+        int[] contains = matrix[idx];
+        
+        // 把set当做visited 存编号表示接触的人
+        set.add(idx);
         
         for (int i = 0; i < n; i++) {
-            if (set.contains(i)) continue;
-            if (tmp[i]==0) continue;
-            if (tmp[i] == 1 && i == index) continue;
-            dfs(i, n, matrix);
+            // 继续深度搜索条件：
+            // 1.接触过 == 1
+            // 2.不是自身
+            // 3.没有访问过的编号
+            if (contains[i] == 1 && idx != i && !set.contains(i)) {
+                dfs(i, n, matrix);
+            }
         }
-        return;
     }
     
     static int solve(int n, int[] sick, int[][] matrix) {
@@ -44,15 +48,15 @@ public class c32 {
         set = new HashSet<>();
         
         for (final int s : sick) {
+            // 以病人开始dfs
             dfs(s, n, matrix);
         }
         
-        int sickNum = sick.length;
-        int checkNum = set.size();
-        
         int check = 0;
+        int sickNum = sick.length;
+        
         if (sickNum > 0) {
-            check = checkNum - sickNum;
+            check = set.size() - sickNum;
         }
         
         return check;
@@ -63,18 +67,18 @@ public class c32 {
         int[] sick = {1, 2};
         int[][] matrix = {{1, 1, 0, 1, 0}, {1, 1, 0, 0, 0}, {0, 0, 1, 0, 1}, {1, 0, 0, 1, 0}, {0, 0, 1, 0, 1}};
         // 3
-        System.out.println("=====ans:"+solve(n, sick, matrix));
+        System.out.println("---ans:" + solve(n, sick, matrix));
         
         int n1 = 3;
         int[] sick1 = {0};
         int[][] matrix1 = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
         // 0
-        System.out.println("=====ans:"+solve(n1, sick1, matrix1));
-
+        System.out.println("---ans:" + solve(n1, sick1, matrix1));
+        
         int n2 = 3;
         int[] sick2 = {0};
         int[][] matrix2 = {{1, 0, 0}, {0, 1, 1}, {0, 1, 1}};
         // 0
-        System.out.println("=====ans:"+solve(n2, sick2, matrix2));
+        System.out.println("---ans:" + solve(n2, sick2, matrix2));
     }
 }
