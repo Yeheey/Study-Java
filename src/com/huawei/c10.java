@@ -5,7 +5,7 @@ import java.util.List;
 
 public class c10 {
     /*
-    【手机App防沉迷系统】--【模拟计算】--80min
+    【手机App防沉迷系统】--【模拟计算】--80min--AI帮助修复+题意理解有偏差
     题目描述
     智能手机方便了我们生活的同时，也侵占了我们不少的时间。“手机App防沉迷系统”能够让我们每天合理地规划手机App使用时间，在正确的时间做正确的事。
     
@@ -34,45 +34,32 @@ public class c10 {
     */
     
     /**
-     * 辅助函数-时间大小比较 1 time1先于time2  -1 time2先于time1  0 time1 == time2
+     * 辅助函数:时间转化为分钟
      */
-    public static int compareTime(String time1, String time2) {
-        int h1 = Integer.parseInt(time1.split(":")[0]);
-        int h2 = Integer.parseInt(time2.split(":")[0]);
-        if (h1 < h2) {
-            return 1;
-        } else if (h2 < h1) {
-            return -1;
-        } else {
-            int m1 = Integer.parseInt(time1.split(":")[1]);
-            int m2 = Integer.parseInt(time2.split(":")[1]);
-            return Integer.compare(m2, m1);
-        }
+    public static int formatTime(String time) {
+        int hour = Integer.parseInt(time.split(":")[0]);
+        int min = Integer.parseInt(time.split(":")[1]);
+        return hour * 60 + min;
     }
     
     /**
-     * 辅助函数：看targetStart or targetEnd 任意一个 是否落在startTime—endTime之间
+     * 辅助函数：某个时间点是否落在 [startTime, endTime) 内
+     * 包含起始时间，不包含结束时间
      */
-    public static boolean isTrue(String targetStart, String targetEnd, String startTime, String endTime) {
-        int res1 = compareTime(startTime, targetStart); // 1 0
-        int res2 = compareTime(targetStart, endTime); // 1 0
-        
-        int res3 = compareTime(startTime, targetEnd); // 1 0
-        int res4 = compareTime(targetEnd, endTime); // 1 0
-        
-        return (res1 >= 0 && res2 >= 0) || (res3 >= 0 && res4 >= 0);
+    public static boolean overlap(String target, String startTime, String endTime) {
+        int start = formatTime(startTime);
+        int end = formatTime(endTime);
+        int ta = formatTime(target);
+        // ✅️ 结束时间是开区间，10:00-11:00 与 11:00-12:00 在 11:00 处不算重叠
+        return ta >= start && ta < end;
     }
     
     /**
-     * 辅助函数-APP优先级比较 app1 在时间点上要先注册
+     * 两个时段是否重叠。只看端点会漏掉「新时段把旧时段整个包住」，
+     * 也会把仅仅相接的结束点当成冲突。
      */
-    public static String comparePriority(String[] app1, String[] app2) {
-        String name1 = app1[0];
-        int p1 = Integer.parseInt(app1[1]);
-        String name2 = app2[0];
-        int p2 = Integer.parseInt(app2[1]);
-        
-        return p1 >= p2 ? name1 : name2;
+    public static boolean rangeOverlap(String start1, String end1, String start2, String end2) {
+        return formatTime(start1) < formatTime(end2) && formatTime(start2) < formatTime(end1);
     }
     
     public static String solve(int n, String[][] inputs, String targetTime) {
@@ -80,74 +67,56 @@ public class c10 {
             return "NA";
         }
         if (n == 1) {
-            return isTrue("00:00", targetTime, inputs[0][2], inputs[0][3]) ? inputs[0][0] : "NA";
+            return overlap(targetTime, inputs[0][2], inputs[0][3]) ? inputs[0][0] : "NA";
         }
         
-        // temp 存重新使用的实际时间
+        // 用于存放合法的注册APP
         List<String[]> temp = new ArrayList<>();
-        temp.add(inputs[0]); // 先存第一个
-        
+        // 起始时间不小于结束时间，这条注册不上
+        if (formatTime(inputs[0][2]) < formatTime(inputs[0][3])) {
+            temp.add(inputs[0]);
+        }
         for (int i = 1; i < n; i++) {
-            String[] cur = inputs[i];
-            String curS = cur[2]; // 起始时间
-            String curE = cur[3]; // 结束时间
+            String[] curArr = inputs[i];
+            String curP = curArr[1]; // app优先级
+            String curS = curArr[2]; // 起始时间
+            String curE = curArr[3]; // 结束时间
             
-            String[] last = temp.getLast();
-            String lastN = last[0];
-            String lastP = last[1];
-            String lastS = last[2];
-            String lastE = last[3];
-            
-            // temp.removeLast();
-            
-            // 检查是否与前一个有重叠
-            if (isTrue(curS, curE, lastS, lastE)) {
-                // 有重叠 返回保留的APP名称
-                String name = comparePriority(last, cur);
-                if (name.equals(cur[0])) {
-                    // 如果保留的是当前的APP 那么last 的结束时间更新为curStart-1min
-                    lastE = curS;
-                    temp.removeLast();
-                    String[] t = new String[4];
-                    t[0] = lastN;
-                    t[1] = lastP;
-                    t[2] = lastS;
-                    t[3] = lastE;
-                    temp.add(t);
-                    temp.add(cur);
-                }
-                // 如果保留的是前一个APP 那么 cur 的时间段都舍弃
-            } else {
-                // 没有重叠 cur直接加入temp
-                temp.add(cur);
+            if (formatTime(curS) >= formatTime(curE)) {
+                continue;
             }
-        }
-        // 填充数据略
-        // for (String[] arr : temp) {
-        //     System.out.println(Arrays.toString(arr));
-        // }
-        
-        
-        StringBuilder res = new StringBuilder();
-        for (String[] tmp : temp) {
-            String tmpN = tmp[0];
-            String tmpS = tmp[2];
-            String tmpE = tmp[3];
-            if (isTrue("00:00", targetTime, tmpS, tmpE)) {
-                if (!res.isEmpty()) {
-                    res.delete(0, res.length());
+            
+            // 必须和全部已注册时段比较，不能只看最后一条
+            List<String[]> hits = new ArrayList<>();
+            int maxPriority = -1;
+            for (String[] reg : temp) {
+                if (!rangeOverlap(curS, curE, reg[2], reg[3])) {
+                    continue;
                 }
-                res.append(tmpN);
+                hits.add(reg);
+                maxPriority = Math.max(maxPriority, Integer.parseInt(reg[1]));
             }
+            
+            // 不高于冲突中的最高优先级：同优先级或更低，整条失败，已有时段也不注销
+            if (Integer.parseInt(curP) <= maxPriority) {
+                continue;
+            }
+            
+            // 高于每一个冲突时段，这些低优先级整段注销，再注册当前 App
+            temp.removeAll(hits);
+            temp.add(curArr);
         }
         
-        if (res.isEmpty()) {
-            res.append("NA");
+        StringBuilder sb = new StringBuilder();
+        temp.forEach(item -> {
+            if (overlap(targetTime, item[2], item[3])) {
+                sb.append(item[0]);
+            }
+        });
+        if (sb.isEmpty()) {
+            sb.append("NA");
         }
-        // System.out.println(isTrue("09:20","08:10","09:10"));
-        // System.out.println(compareTime("09:20", "09:20"));
-        // System.out.println(comparePriority(inputs[0], inputs[1]));
-        return res.toString();
+        return sb.toString();
     }
     
     static void main() {
@@ -173,5 +142,31 @@ public class c10 {
         String targetTime16 = "09:40";
         // App1
         System.out.println(solve(n16, inputs16, targetTime16));
+        
+        int n11 = 3;
+        String[][] inputs11 = {{"App1", "3", "09:00", "10:00"}, {"App2", "1", "11:00", "12:00"}, {"App3", "2", "09:30", "11:30"}};
+        String targetTime11 = "11:10";
+        // App2
+        System.out.println(solve(n11, inputs11, targetTime11));
+        
+        // 一条高优先级要同时注销所有冲突的低优先级
+        int n12 = 3;
+        String[][] inputs12 = {{"App1", "1", "09:00", "10:00"}, {"App2", "1", "10:30", "11:30"}, {"App3", "2", "09:30", "11:00"}};
+        String targetTime12 = "09:10";
+        // NA
+        System.out.println(solve(n12, inputs12, targetTime12));
+        
+        int n13 = 3;
+        String[][] inputs13 = {{"App1", "1", "09:00", "10:00"}, {"App2", "1", "10:30", "11:30"}, {"App3", "2", "09:30", "11:00"}};
+        String targetTime13 = "09:40";
+        // App3
+        System.out.println(solve(n13, inputs13, targetTime13));
+        
+        // 非法时段不能占住时间，后面的合法注册要能成功
+        int n14 = 2;
+        String[][] inputs14 = {{"Bad", "1", "09:00", "09:00"}, {"App2", "1", "09:00", "10:00"}};
+        String targetTime14 = "09:30";
+        // App2
+        System.out.println(solve(n14, inputs14, targetTime14));
     }
 }
