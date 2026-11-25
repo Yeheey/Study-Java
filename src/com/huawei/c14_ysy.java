@@ -1,10 +1,14 @@
 package com.huawei;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class c14 {
+public class c14_ysy {
     /*
-    【异常的打卡记录】--【模拟计算】--80min
+    【14.异常的打卡记录】--【模拟计算】--80min
+    ❌️不可以用map做 题目要求按原顺序输出
     题目描述
     考勤记录是分析和考核职工工作时间利用情况的原始依据，也是计算职工工资的原始依据，为了正确地计算职工工资和监督工资基金使用情况，公司决定对员工的手机打卡记录进行异常排查。
     
@@ -115,14 +119,14 @@ public class c14 {
             boolean[] visited = new boolean[len]; // 异常的记录 标记为true
             for (int i = 0; i < record.size(); i++) {
                 // 先看本单条是否异常
-                String[] cur = clockRecords[i];
+                String[] cur = record.get(i);
                 if (!compare(cur)) {
                     visited[i] = true;
                 }
                 if (!visited[i]) {
                     // 如果正常 再比较i之前所有的值是否有异常 如果有 两条记录都标记异常
                     for (int j = 0; j < i; j++) {
-                        String[] old = clockRecords[j];
+                        String[] old = record.get(j);
                         boolean isAbnormal = isError(old, cur);
                         if (isAbnormal) {
                             visited[i] = true;
@@ -154,7 +158,7 @@ public class c14 {
         }
         
         // 6.sb空输出null
-        if(sb.isEmpty()){
+        if (sb.isEmpty()) {
             sb.append("null");
         }
         return sb.toString();
@@ -170,6 +174,11 @@ public class c14 {
         String[][] clockRecords1 = {{"100000", "10", "1", "ABCD", "ABCD"}, {"100000", "80", "10", "ABCE", "ABCE"}};
         // null
         System.out.println(solve(n1, clockRecords1));
+        
+        int n2 = 2;
+        String[][] clockRecords2 = {{"100001", "10", "1", "ABCD", "ABCD"}, {"100002", "10", "1", "ABCD", "ABCD"}, {"100001", "50", "10", "ABCD", "ABCD"}};
+        // "100001,10,1,ABCD,ABCD;100001,50,10,ABCD,ABCD"
+        System.out.println(solve(n2, clockRecords2));
         
     }
 }

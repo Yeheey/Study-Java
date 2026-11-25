@@ -6,7 +6,7 @@ import java.util.List;
 
 public class c21 {
     /*
-        【21.猜数字】--想不出来--瞄了一眼答案说暴力枚举--开写
+        【21.猜数字】--想不出来--瞄了一眼答案说暴力枚举--开写--2h--AI辅助修正
         题目描述
         一个人设定一组四位的数字作为谜底，另一方猜。
         每猜一个数，出数者就要根据这个数字给出提示，提示以XAYB形式呈现，直到猜中位置。
@@ -35,32 +35,34 @@ public class c21 {
         int[] res = new int[2];
         int count1 = 0;
         int count2 = 0;
-        char[] c = String.valueOf(cur).toCharArray();
-        char[] g = String.valueOf(guess).toCharArray();
         
-        StringBuilder curSb = new StringBuilder(cur); // 谜底母串
-        StringBuilder temp = new StringBuilder(); // 存位置和数字都对的上的 子串
+        // 补成 4 位。String.valueOf(85) 是 "85"，会越界，也会和 0085 错位
+        char[] c = String.format("%04d", cur).toCharArray();
+        char[] g = String.format("%04d", guess).toCharArray();
         
+        // 先记下位置和数字都对的下标，这些数字不能再拿去算 B
+        boolean[] usedCur = new boolean[4];
+        boolean[] usedGuess = new boolean[4];
         for (int i = 0; i < 4; i++) {
-            char cc = c[i]; // cur第i个字符
-            char gc = g[i]; // guess第i个字符
-            // 当前位置和数字都对的上
-            if (cc == gc) {
-                temp.append(cc);
-                count1++;
+            if (c[i] != g[i]) {
+                continue;
             }
-            // System.out.println(temp);
-            if(!temp.isEmpty()){
-                int pos = curSb.indexOf(String.valueOf(temp));
-                if(pos != -1){
-                    // curSb 现在是减去同位置同数字剩下的子串
-                    curSb.delete(pos, pos + temp.length());
+            count1++;
+            usedCur[i] = true;
+            usedGuess[i] = true;
+        }
+        for (int i = 0; i < 4; i++) {
+            if (usedGuess[i]) {
+                continue;
+            }
+            for (int j = 0; j < 4; j++) {
+                // 这个谜底数字已经用过，或者数字不同
+                if (usedCur[j] || g[i] != c[j]) {
+                    continue;
                 }
-            }
-            // 当前位置上不对  但是cur里包含了当前guess字符
-            String gcStr = String.valueOf(gc);
-            if (cc != gc && curSb.toString().contains(gcStr)) {
                 count2++;
+                usedCur[j] = true;
+                break;
             }
         }
         res[0] = count1;
@@ -73,18 +75,14 @@ public class c21 {
      * cur 0000-9999
      */
     public static boolean check(String cur, List<int[]> sorted) {
-        // int cr = 0;// 位置对数字对
-        // int ce = 0;// 数字对位置错
-        
         // 要求cr == gr ce==ge 且每一个都对 才算猜中了 符合所有的 存入temp中
         for (int[] guess : sorted) {
             int[] res = checkNum(Integer.parseInt(cur), guess[0]);
-            int num = guess[0]; // 猜测数字
             int gr = guess[1]; // 位置对数字对
             int ge = guess[2]; // 数字对位置错
             
             // 只要有一个对不上 false跳出循环
-            if(res[0] != gr && res[1] != ge){
+            if (res[0] != gr || res[1] != ge) {
                 return false;
             }
         }
@@ -104,18 +102,9 @@ public class c21 {
             int y = Integer.parseInt(String.valueOf(input.split(" ")[1].charAt(2)));
             int[] temp = new int[]{curNum, x, y};
             sorted.add(temp);
-            
-            // System.out.println("curNum" + curNum);
-            // System.out.println("x" + x);
-            // System.out.println("y" + y);
         }
         sorted.sort((a, b) -> {
             return a[1] != b[1] ? Integer.compare(b[1], a[1]) : Integer.compare(b[2], a[2]);
-        });
-        
-        // print
-        sorted.forEach(item -> {
-            System.out.println(Arrays.toString(item));
         });
         
         String res = "NA"; // 结果
@@ -129,7 +118,11 @@ public class c21 {
             if (check(cur, sorted)) {
                 temp.add(cur);
             }
-            // System.out.println(cur);
+        }
+        
+        // 恰好一个谜底才有答案，否则保持 NA
+        if (temp.size() == 1) {
+            res = temp.getFirst();
         }
         return res;
     }
