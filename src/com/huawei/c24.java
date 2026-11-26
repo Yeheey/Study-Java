@@ -2,10 +2,11 @@ package com.huawei;
 
 public class c24 {
     /*
-        【24.最大利润/贪心的商人】--【贪心】--30min 【自己再写一遍力扣】
+        【24.最大利润/贪心的商人】--【贪心】--30min 【自己再写一遍力扣-已写】--二刷6min
         题目描述
         商人经营一家店铺，有number种商品，由于仓库限制每件商品的最大持有数量是item[index]，每种商品的价格是item-price[item_index][day]
-        通过对商品的买进和卖出获取利润，请给出商人在days天内能获取的最大的利润 注：同一件商品可以反复买进和卖出
+        通过对商品的买进和卖出获取利润，请给出商人在days天内能获取的最大的利润
+        ☢️注：同一件商品可以反复买进和卖出（有的股票题只能持有一张股票 ）
         
         输入描述
         第一行输入商品的数量number，比如3
@@ -21,15 +22,16 @@ public class c24 {
         */
     public static int solve(int number, int days, int[] items, int[][] prices) {
         int maxRes = 0;
-        // 遍历每个商品
+        // 遍历商品
         for (int i = 0; i < number; i++) {
-            int maxProfit = 0; // 设置当前商品的最大利润
+            int curMax = 0; // 当前商品的最大利润
+            // 遍历当前商品每天金额
             for (int j = 1; j < days; j++) {
-                int profit = Math.max(0, prices[i][j] - prices[i][j - 1]);
-                // 当前价格减去前一天价格，如果为负数则代表亏本，不计入利润
-                maxProfit += profit * items[i]; // 求出当前商品能够获取的最大利润
+                // 我只要获利的 舍去负利润
+                curMax += Math.max(0, prices[i][j] - prices[i][j - 1]);
             }
-            maxRes += maxProfit;
+            // 乘上对应数量
+            maxRes += curMax * items[i];
         }
         return maxRes;
     }
