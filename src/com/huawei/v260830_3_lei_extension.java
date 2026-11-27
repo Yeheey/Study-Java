@@ -33,13 +33,13 @@ public class v260830_3_lei_extension {
         backtrack(coins, nums, target, 0, new ArrayList<>(), res);
         return res;
     }
+    
     /*
      * index是当前遍历的面值和数量
      * remain是剩余的钱
      * path是当前符合target的数组
      * res是二维数组，用于返回所有结果
      */
-    
     static void backtrack(int[] coins, int[] nums, int remain, int index, List<Integer> path, List<List<Integer>> res) {
         if (remain == 0) {
             res.add(new ArrayList<>(path));
@@ -63,8 +63,8 @@ public class v260830_3_lei_extension {
         
         // 回溯：把刚才加进去的硬币全部移除
         for (int k = 0; k < nums[index]; k++) {
-            if (!path.isEmpty() && path.get(path.size() - 1) == coins[index]) {
-                path.remove(path.size() - 1);
+            if (!path.isEmpty() && path.getLast() == coins[index]) {
+                path.removeLast();
             }
         }
     }
@@ -74,6 +74,7 @@ public class v260830_3_lei_extension {
         int[] coins = {1, 5, 10, 50, 100};
         int[] nums = {2, 3, 5, 7, 99};
         int target = 6;
+        // [[1, 5]]
         System.out.print(solve(coins, nums, target));
     }
 }
