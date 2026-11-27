@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class c27_todo {
+public class c27_ai_answer {
     /*
         【27.小明减肥】--【动态规划+DFS+回溯】
         题目描述
@@ -26,52 +26,36 @@ public class c27_todo {
     static List<List<Integer>> res = new ArrayList<>(); // 可行解存结果中 res=temp.size()
     
     /**
-     * idx-当前选中的calorie下标
+     * idx-下一个运动从这里开始选，保证下标递增，组合不重复
      * path-可行解 path.size()就是已选的个数
-     * n-可选运动个数
-     * t-卡路里总和
-     * k-目标选中运动个数
+     * remainsCalorie = targetCalorie - path总和
+     * remainsNum = targetNum - path.size()
      * calorie-卡路里 长度为n
      */
-    public static void dfs(int idx, List<Integer> path, int remainsCalorie, int remainsNum, int k, int[] calorie) {
-        System.out.println("----进入dfs idx= " + idx + " path= " + path + " 剩余卡路里= " + remainsCalorie + "剩余可选数量= " + remainsNum);
-        // 递归出口
-        if (idx == caLen || remainsNum < 0 || remainsCalorie < 0) {
+    public static void dfs(int idx, List<Integer> path, int remainsCalorie, int remainsNum, int[] calorie) {
+        // 已经选够 targetNum 个，剩余卡路里刚好为 0 才是可行解
+        if (remainsNum == 0) {
+            if (remainsCalorie == 0) {
+                // ✅️不要忘记重新new一个
+                res.add(new ArrayList<>(path));
+            }
+            return;
+        }
+        // 运动不够再选，或剩余卡路里已经不可能（后面都是正数）
+        if (idx >= caLen || remainsCalorie <= 0 || caLen - idx < remainsNum) {
             return;
         }
         
-        path.add(calorie[idx]);
-        remainsNum = targetNum - path.size();
-        remainsCalorie = targetCalorie - calorie[idx];
-        
-        System.out.println("加入之后 idx=" + idx + " path=" + path + " 剩余卡路里= " + remainsCalorie + "剩余可选数量= " + remainsNum);
-        
-        // 计算卡路里总和
-        int total = 0;
-        for (final int p : path) {
-            total += p;
-        }
-        
-        // 当前路径上 total == targetCalorie size == k 可行解
-        if (total == targetCalorie && path.size() == k) {
-            // ✅️不要忘记重新new一个
-            res.add(new ArrayList<>(path));
-        }
-        System.out.println("当前总卡路里数" + total + "path长度" + path);
-        
-        for (int i = idx + 1; i < caLen; i++) {
-            dfs(i, path, remainsCalorie, remainsNum, k, calorie);
-        }
-        
-        // 不合法 回溯
-        for (int k1 = 0; k1 < targetNum; k1++) {
-            if (!path.isEmpty() && path.getLast() == calorie[idx]) {
-                path.removeLast();
+        for (int i = idx; i < caLen; i++) {
+            // 数组已排序，当前运动都超了，后面更大，不用再试
+            if (calorie[i] > remainsCalorie) {
+                break;
             }
+            path.add(calorie[i]);
+            // 选了 i 之后只能从 i+1 继续，避免 [1,2] 和 [2,1] 各算一次
+            dfs(i + 1, path, remainsCalorie - calorie[i], remainsNum - 1, calorie);
+            path.removeLast();
         }
-        
-        System.out.println("回溯idx=" + idx + " path=" + path);
-        
     }
     
     public static int solve(int n, int t, int k, int[] calorie) {
@@ -86,8 +70,8 @@ public class c27_todo {
         caLen = n;
         
         List<Integer> path = new ArrayList<>(); // 可行解 要求长度为k 和为t
-        // 从第一个运动开始递归 剩余卡路里为targetCalorie 剩余可选运动数量为 targetNum
-        dfs(0, path, targetCalorie, targetNum, k, calorie);
+        // 从下标 0 开始选。循环放在 dfs 里面，每个起点都会被试到
+        dfs(0, path, targetCalorie, targetNum, calorie);
         
         System.out.println("res:--" + res);
         return res.size();
