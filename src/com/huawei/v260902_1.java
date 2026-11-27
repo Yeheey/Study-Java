@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class v260902_1 {
     /*
-    4.【26.9.2-1】查找幸运数
+    【26.9.2-1】查找幸运数
     题目描述
     请在一个仅由数字组成的字符串中，找出只由6或8组成的最长的连续子串。
     输入描述
@@ -24,7 +24,6 @@ public class v260902_1 {
             }
             int j = i + 1;
             
-            StringBuilder sb = new StringBuilder();
             while (j < n && (num.charAt(j) == '6' || num.charAt(j) == '8')) {
                 int tempLen = j - i + 1;
                 if (tempLen > maxLen) {

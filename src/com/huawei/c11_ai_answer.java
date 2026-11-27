@@ -3,7 +3,7 @@ package com.huawei;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class c11_ai {
+public class c11_ai_answer {
     /**
      * 通话流量监控：找峰顶三元组 (i,j,k)，使 k-i 最小。
      * 条件：i < j < k，且 nums[j] > nums[i]、nums[j] > nums[k]。

@@ -7,7 +7,7 @@ import java.util.TreeSet;
 
 public class v260816_3_ysy {
     /*
-     【26.8.16-3】智能家居模式调度优化--【DFS】
+     【26.8.16-3】智能家居模式调度优化--【动态规划+DFS】
      题目描述
      在一个智能家居系统四中，用户可以设置多个“自动化联动模式。每个模式 modes[i]=[start_time,end_time,power]描述如下:
      · 模式在左闭右开区间[start_time,end_time)(单位:秒)内处于运行状态

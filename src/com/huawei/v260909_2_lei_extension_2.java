@@ -7,8 +7,8 @@ import java.util.Queue;
 
 public class v260909_2_lei_extension_2 {
     /*
-    * 给你二叉树的根节点 root ，返回其节点值的 层序遍历。（即逐层地，从左到右访问所有节点）。
-    */
+     * 【二叉树BFS】给你二叉树的根节点 root ，返回其节点值的 层序遍历。（即逐层地，从左到右访问所有节点）。
+     */
     public static List<List<Integer>> levelOrder(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         if (root == null) {
@@ -26,11 +26,13 @@ public class v260909_2_lei_extension_2 {
             // 从根节点下面遍历
             for (int i = 0; i < currentLevelSize; i++) {
                 TreeNode curNode = queue.poll();
-                level.add(curNode.val);
-                if (curNode.left != null) {
+                if (curNode != null) {
+                    level.add(curNode.val);
+                }
+                if (curNode != null && curNode.left != null) {
                     queue.offer(curNode.left);
                 }
-                if (curNode.right != null) {
+                if (curNode != null && curNode.right != null) {
                     queue.offer(curNode.right);
                 }
             }

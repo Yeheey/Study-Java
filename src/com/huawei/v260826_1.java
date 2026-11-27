@@ -5,7 +5,7 @@ import java.util.List;
 
 public class v260826_1 {
     /*
-        10.【26.8.26-1】仓库查询
+        【26.8.26-1】仓库查询--【模拟计算】
         题目描述:
         有一批货物A会按顺序进入仓库，第i件货物的价格是A[i]。
         管理员会发起一组查询请求B，对于第j次查询，你需要回答:在当前已经进入仓库的前Bj件货物中，按价格从小到大排序后，第j位的价格是多少。
@@ -27,6 +27,7 @@ public class v260826_1 {
         // 按照下标排序
         List<List<Integer>> order = new ArrayList<>();
         List<Integer> orderItem = new ArrayList<>();
+        
         // 遍历货物
         for (int i = 0; i < price.length; i++) {
             orderItem.add(price[i]);
@@ -35,6 +36,7 @@ public class v260826_1 {
             order.add(sorted);
         }
         System.out.println(order);
+        
         // 遍历查询
         for (int i = 0; i < query.length; i++) {
             int resItem = order.get(query[i] - 1).get(i);

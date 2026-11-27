@@ -2,7 +2,7 @@ package com.huawei;
 
 public class v260809_1 {
     /*
-    25.【26.8.9-1】查找最佳充电策略
+    【26.8.9-1】查找最佳充电策略
     题目描述
     给定一个一维数组 priceArray，表示未来 priceRecords 小时内每小时的电价（单位：分/kWh）。
     找出充电成本最低的连续 hours 个小时时间段的开始时刻点。

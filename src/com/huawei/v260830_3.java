@@ -6,7 +6,7 @@ import java.util.List;
 public class v260830_3 {
 
 /*
-    9.【26.8.30-3】单词搜索计数
+    【26.8.30-3】单词搜索计数--【二维DFS】
     题目描述：
     给定一个mxn的二维字符网格board 和一个字符串单词word。
     请计算单词word在网格中出现的总次数。
