@@ -121,7 +121,7 @@ public class c29_ysy {
         String s3 = "ASDW";
         // 0
         System.out.println("ans : " + solve(s3));
-
+        
         String s4 = "AADDSSWW";
         // 0
         System.out.println("ans : " + solve(s4));
@@ -129,7 +129,7 @@ public class c29_ysy {
         String s6 = "AWAAWSSS";
         // 3（A、S 各多 1，最短同时覆盖两者的窗口长度为 3，不是 2）
         System.out.println("ans : " + solve(s6));
-
+        
         String s7 = "ASASASAS";
         // 4
         System.out.println("ans : " + solve(s7));
@@ -137,11 +137,11 @@ public class c29_ysy {
         String s8b = "AAAAADDD";
         // 4（A 多 3、D 多 1）
         System.out.println("ans : " + solve(s8b));
-
+        
         String s10 = "WWWWSSSS";
         // 4
         System.out.println("ans : " + solve(s10));
-
+        
         String s11 = "AAAASSSSDDDD";
         // 6
         System.out.println("ans : " + solve(s11));

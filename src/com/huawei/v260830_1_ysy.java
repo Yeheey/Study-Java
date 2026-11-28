@@ -36,7 +36,7 @@ public class v260830_1_ysy {
         int n = nums.length;
         while (i + k < n) {
             winSum = winSum - nums[i] + nums[i + k];
-            if(winSum>=res){
+            if (winSum >= res) {
                 res = winSum;
             }
             i++;

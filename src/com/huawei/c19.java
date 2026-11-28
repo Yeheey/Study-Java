@@ -40,7 +40,7 @@ public class c19 {
             total[0] += times[i];
         }
         Arrays.sort(total);
-        return total[m-1];
+        return total[m - 1];
     }
     
     static void main() {

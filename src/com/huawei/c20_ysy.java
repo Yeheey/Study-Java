@@ -75,39 +75,39 @@ public class c20_ysy {
         // case1 样例，期望输出：6
         int[][] arr1 = {{1, 2, 5, 2}, {2, 4, 4, 5}, {3, 5, 7, 1}, {4, 6, 2, 4}};
         System.out.println(solve(arr1));
-
+        
         // case2 全连通，全部差<=1，期望输出：9
         int[][] arr2 = {{1, 2, 3}, {2, 3, 4}, {3, 4, 5}};
         System.out.println(solve(arr2));
-
+        
         // case3 单个格子，期望输出：1
         int[][] arr3 = {{5}};
         System.out.println(solve(arr3));
-
+        
         // case4 完全互不连通，每个格子独立，期望输出：1
         int[][] arr4 = {{1, 3, 5}, {7, 9, 11}};
         System.out.println(solve(arr4));
-
+        
         // case5 一条横向连通，期望输出：3
         int[][] arr5 = {{2, 3, 4, 6, 7}};
         System.out.println(solve(arr5));
-
+        
         // case6 两条区域，一大一小，期望输出：4
         int[][] arr6 = {{1, 1, 5, 5}, {1, 2, 5, 6}, {9, 9, 3, 3}};
         System.out.println(solve(arr6));
-
+        
         // case7 对角线连通，期望输出：5
         int[][] arr7 = {{1, 5, 5}, {2, 2, 5}, {5, 3, 3}};
         System.out.println(solve(arr7));
-
+        
         // case8 边界，2行2列，期望输出：4
         int[][] arr8 = {{0, 1}, {3, 2}};
         System.out.println(solve(arr8));
-
+        
         // case9 阶梯状，期望输出：6
         int[][] arr9 = {{1, 1, 1, 8}, {2, 2, 8, 8}, {3, 8, 8, 8}};
         System.out.println(solve(arr9));
-
+        
         // case10 相同值整片，期望输出：9
         int[][] arr10 = {{4, 4, 4}, {4, 4, 4}, {4, 4, 4}};
         System.out.println(solve(arr10));

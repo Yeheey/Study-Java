@@ -10,11 +10,11 @@ public class v260830_ai_extension {
     
     // idx：当前处理第几种纸币，path：当前方案
     static void dfs(int idx, List<Integer> path, List<List<Integer>> res, int[] coins) {
-        if(idx == coins.length) {
+        if (idx == coins.length) {
             // 到最后一种面值，判断总和
             int sum = 0;
-            for(int x : path) sum += x;
-            if(sum == targetNum) {
+            for (int x : path) sum += x;
+            if (sum == targetNum) {
                 res.add(new ArrayList<>(path));
             }
             return;
@@ -22,15 +22,15 @@ public class v260830_ai_extension {
         // 当前面值最多拿 cnt 张
         int maxTake = remains[idx];
         // 枚举拿 0 ~ maxTake 张
-        for(int take = 0; take <= maxTake; take++) {
+        for (int take = 0; take <= maxTake; take++) {
             // 拿take张，加入path
-            for(int t = 0; t < take; t++) {
+            for (int t = 0; t < take; t++) {
                 path.add(coins[idx]);
             }
-            dfs(idx+1, path, res, coins);
+            dfs(idx + 1, path, res, coins);
             // 回溯：删掉刚刚加的take张
-            for(int t = 0; t < take; t++) {
-                if(!path.isEmpty()) path.removeLast();
+            for (int t = 0; t < take; t++) {
+                if (!path.isEmpty()) path.removeLast();
             }
         }
     }

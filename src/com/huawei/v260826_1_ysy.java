@@ -1,6 +1,8 @@
 package com.huawei;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class v260826_1_ysy {
 /*
@@ -56,7 +58,7 @@ public class v260826_1_ysy {
         int m = query.length;
         
         // 空间换时间 从第一个货物入场 就排序add进sorted里面
-        List<List<Integer>> sorted =new ArrayList<>();
+        List<List<Integer>> sorted = new ArrayList<>();
         List<Integer> temp = new ArrayList<>();
         for (final int j : price) {
             temp.add(j);
@@ -67,7 +69,7 @@ public class v260826_1_ysy {
         
         for (int i = 0; i < m; i++) {
             // query[i]:找前s位进库第i大的值
-            int s = query[i]-1;
+            int s = query[i] - 1;
             int r = sorted.get(s).get(i);
             res.add(r);
         }

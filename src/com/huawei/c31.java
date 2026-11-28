@@ -85,7 +85,7 @@ public class c31 {
         });
         
         List<Integer> res = new ArrayList<>();
-        if(!list.isEmpty()){
+        if (!list.isEmpty()) {
             res.add(list.getFirst().get(0));
             res.add(list.getFirst().get(1));
         }

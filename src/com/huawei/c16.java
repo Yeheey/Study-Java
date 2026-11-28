@@ -1,6 +1,9 @@
 package com.huawei;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class c16 {
     /*
@@ -85,9 +88,9 @@ public class c16 {
         }
         // System.out.println(map);
         
-        if(!sb.isEmpty()){
+        if (!sb.isEmpty()) {
             // 删除最后一个分号
-            sb.deleteCharAt(sb.length()-1);
+            sb.deleteCharAt(sb.length() - 1);
         }
         return sb.toString();
     }

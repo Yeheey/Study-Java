@@ -1,11 +1,5 @@
 package com.huawei;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-
 public class v260913_2 {
     /*
     【26.9.13-2】受限序列重排--【数学】--抄答案--不太会
@@ -84,15 +78,15 @@ public class v260913_2 {
     static void main() {
         int[] nums = {2, 2, 3};
         int k = 1;
-        System.out.println("ans1====" +countArrangements(nums, k));
+        System.out.println("ans1====" + countArrangements(nums, k));
         // 2 322 223
-
+        
         int[] nums1 = {1, 1, 2, 2};
         int k1 = 2;
         // 4
         System.out.println("ans2====" + countArrangements(nums1, k1));
         
-        int[] nums2 = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+        int[] nums2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
         int k2 = 14;
         // 4
         System.out.println("ans3====" + countArrangements(nums2, k2));

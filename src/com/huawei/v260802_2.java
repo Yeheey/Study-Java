@@ -242,7 +242,7 @@ public class v260802_2 {
         System.out.println(solve(input));
         // 预期输出：1.0.0-alpha.beta-A+C
         
-        String [] input2 = {"1.4.0-alpha","1.3.9","1.4.0","1.4.0-alpha+build9","1.4.0-beta","1.4.0-beta.2","1.4.0-beta.10","1.4.0-beta.10+zzz","1.4.0-beta.10+aaa","1.4.0-alpha.10","2.0.0-1","2.0.0"};
+        String[] input2 = {"1.4.0-alpha", "1.3.9", "1.4.0", "1.4.0-alpha+build9", "1.4.0-beta", "1.4.0-beta.2", "1.4.0-beta.10", "1.4.0-beta.10+zzz", "1.4.0-beta.10+aaa", "1.4.0-alpha.10", "2.0.0-1", "2.0.0"};
         System.out.println(solve(input2));
         // 预期输出：2.0.0-1
     }

@@ -78,7 +78,7 @@ public class c25 {
         //     });
         // });
         
-        String res= "NULL";
+        String res = "NULL";
         if (!sb.isEmpty()) {
             res = sb.toString().trim();
         }

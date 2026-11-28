@@ -24,7 +24,7 @@ public class v260823_1 {
         int curIndex = 0;
         while (true) {
             // 已经到达或越过终点
-            if (curIndex >= n-1) {
+            if (curIndex >= n - 1) {
                 return res;
             }
             if (tiles[curIndex] == -1) {

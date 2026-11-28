@@ -1,7 +1,5 @@
 package com.huawei;
 
-import java.util.Arrays;
-
 public class c4 {
     /*
     【4.查找接口成功率最优时间段】--【前缀和】--38min

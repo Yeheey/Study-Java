@@ -61,7 +61,7 @@ public class v260812_2 {
                 break;
             }
             
-           
+            
             // 2.2 如果非目标层 则需要遍历当前层
             for (int i = 0; i < levelSize; i++) {
                 int node = queue.poll();

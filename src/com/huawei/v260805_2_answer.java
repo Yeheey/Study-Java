@@ -58,7 +58,6 @@ public class v260805_2_answer {
     }
     
     
-    
     static void main() {
         String[] s = {"G", "B", "A", "F", "D", "C", "B", "Z", "O", "P", "Q", "X", "Y"};
         System.out.println(solve(s));

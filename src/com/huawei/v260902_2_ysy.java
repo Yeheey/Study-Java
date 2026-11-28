@@ -31,7 +31,7 @@ public class v260902_2_ysy {
         Arrays.sort(originalLand, (a, b) -> Integer.compare(a[0], b[0]));
         // ⭐或者更优雅
         Arrays.sort(originalLand, Comparator.comparingInt(a -> a[0]));
-      
+        
         List<Integer> current = new ArrayList<>();
         current.add(originalLand[0][0]);
         current.add(originalLand[0][1]);

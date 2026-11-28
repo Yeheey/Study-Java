@@ -2,7 +2,7 @@ package com.huawei;
 
 public class v260823_3_ysy {
     /*
-        【26.8.23-3】抗洪救灾-【二维DFS】
+        【26.8.23-3】抗洪救灾-【二维DFS】--三刷--30min
         题目描述：
         某地区发生特大洪水，水位高达X，该地区被划分成了m * n个区块，各区块海拔高度不同。
         被洪水淹没区域的群众已经自发转移到附近的高地，消防官兵需要快速获取未被淹没的高地数量，并派出救援队将群众转移。
@@ -19,49 +19,50 @@ public class v260823_3_ysy {
         输出描述：
         一个整数，表示未被淹没的高地区域数量。
     */
-    static int height;
-    static int row;
-    static int col;
-    static int[][] matrix;
     
-    static void dfs(int r, int c, boolean[][] visited) {
-        // 递归出口 遇到边界
-        if (r >= row || c >= col || r < 0 || c < 0) {
+    static int[][] directions = {{-1, 0}, {-1, -1}, {-1, 1}, {1, 0}, {1, -1}, {1, 1}, {0, -1}, {0, 1}};
+    static boolean[][] visited;
+    static int count;
+    
+    static void dfs(int r, int c, int[][] matrix, int m, int n, int x) {
+        if (r < 0 || r >= m || c < 0 || c >= n || visited[r][c] || matrix[r][c] <= x) {
             return;
         }
         
-        // 标记访问
         visited[r][c] = true;
         
-        dfs(r - 1, c - 1, visited);
-        dfs(r - 1, c, visited);
-        dfs( r - 1, c + 1, visited);
-        dfs( r, c - 1, visited);
-        dfs( r, c + 1, visited);
-        dfs( r + 1, c - 1, visited);
-        dfs( r + 1, c, visited);
-        dfs(r + 1, c + 1, visited);
-        
+        for (final int[] direction : directions) {
+            int newI = r + direction[0];
+            int newJ = c + direction[1];
+            dfs(newI, newJ, matrix, m, n, x);
+        }
     }
     
-    static int solve(int x, int m, int n, int[][] mat) {
-        height = x;
-        row = m;
-        col = n;
-        matrix = mat;
-        boolean[][] visited = new boolean[row][col];
+    /**
+     * x-洪水高度
+     * m-行
+     * n-列
+     * matrix-每个区块海拔高度
+     */
+    static int solve(int x, int m, int n, int[][] matrix) {
+        if (matrix == null || m == 0 || n == 0) {
+            return 0;
+        }
         
-        int count = 0;
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                // 判断 没被淹没且没被访问过
-                if (matrix[i][j] > height && !visited[i][j]) {
+        // 初始化
+        visited = new boolean[m][n];
+        count = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                // 只有大于水位 且没有访问过 才进行深度搜索
+                if (matrix[i][j] > x && !visited[i][j]) {
+                    // 外层DFS
+                    dfs(i, j, matrix, m, n, x);
                     count++;
-                    dfs(i, j, visited);
                 }
             }
         }
-       
+        // System.out.println(Arrays.deepToString(visited));
         return count;
     }
     

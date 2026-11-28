@@ -46,7 +46,7 @@ public class c15 {
                 continue;
             }
             if (tmp.size() < 3) {
-               continue;
+                continue;
             }
             // 成绩降序排列
             tmp.sort((a, b) -> b - a);

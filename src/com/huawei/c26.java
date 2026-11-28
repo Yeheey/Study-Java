@@ -94,15 +94,15 @@ public class c26 {
         String[] s1 = {"20CNY53fen", "53HKD87cents"};
         // 6432
         System.out.println(solve(s1));
-
+        
         String[] s2 = {"100CNY"};
         // 10000
         System.out.println(solve(s2));
-
+        
         String[] s3 = {"3000fen"};
         // 3000
         System.out.println(solve(s3));
-
+        
         String[] s4 = {"123HKD"};
         // 10000
         System.out.println(solve(s4));

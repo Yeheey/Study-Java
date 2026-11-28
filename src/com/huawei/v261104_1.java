@@ -28,7 +28,7 @@ public class v261104_1 {
         // 地点编号满足0≤locations[i]≤10 下标是编号 访问过变为true
         boolean[] locations = new boolean[11];
         // 遍历中间的值 要求每个编号都不一样
-        for (int i = s + 1; i < e ; i++) {
+        for (int i = s + 1; i < e; i++) {
             int cur = input[i];
             // 如果访问过 说明中间有编号重复 当前编号和起始编号一样  都不合法
             if (locations[cur] || cur == start) {
@@ -81,19 +81,19 @@ public class v261104_1 {
         int[] input2 = {2, 5, 3, 2, 4, 6, 4};
         // 2
         System.out.println(solve(input2));
-
+        
         int[] input3 = {1, 1, 1};
         // 2
         System.out.println(solve(input3));
-
+        
         int[] input4 = {1, 2, 3, 4};
         // 0
         System.out.println(solve(input4));
-
+        
         int[] input5 = {1, 2, 2, 1};
         // 1
         System.out.println(solve(input5));
-
+        
         int[] input6 = {1, 2, 1, 2, 1};
         // 3
         System.out.println(solve(input6));

@@ -59,7 +59,7 @@ public class v260916_2_ysy {
                 if (isValid(matrix[i][right - 1])) {
                     List<Integer> temp = new ArrayList<>();
                     temp.add(i);
-                    temp.add(right-1);
+                    temp.add(right - 1);
                     res.add(new ArrayList<>(temp));
                 }
             }
@@ -70,7 +70,7 @@ public class v260916_2_ysy {
                 for (int i = right; i >= left; i--) {
                     if (isValid(matrix[bottom - 1][i])) {
                         List<Integer> temp = new ArrayList<>();
-                        temp.add(bottom-1);
+                        temp.add(bottom - 1);
                         temp.add(i);
                         res.add(new ArrayList<>(temp));
                     }

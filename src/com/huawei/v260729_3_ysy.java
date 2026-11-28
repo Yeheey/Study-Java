@@ -70,7 +70,7 @@ public class v260729_3_ysy {
         }
         
         res[1] = lastCarLeaveTime;
-        res[0] = lastCarLeaveTime- time[0];
+        res[0] = lastCarLeaveTime - time[0];
         
         return res;
     }

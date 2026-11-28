@@ -90,7 +90,7 @@ public class v260805_2 {
         int n = 6;
         String s = "G,B,A,F,D,C,B,Z,O,P,Q,X,Y";
         String s1 = "A";
-
+        
         System.out.println(solve(n, s1));
     }
 }

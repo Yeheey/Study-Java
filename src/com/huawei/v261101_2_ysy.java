@@ -53,7 +53,7 @@ public class v261101_2_ysy {
         }
         list.sort((a, b) -> b - a);
         
-        return list.get(k-1);
+        return list.get(k - 1);
     }
     
     static void main() {
