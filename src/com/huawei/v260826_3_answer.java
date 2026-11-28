@@ -3,7 +3,7 @@ package com.huawei;
 import java.util.ArrayList;
 import java.util.List;
 
-public class v260826_3 {
+public class v260826_3_answer {
     /*
      【26.8.26-3】部门绩效汇总--【二叉树+DFS】
      题目描述:
@@ -79,13 +79,11 @@ public class v260826_3 {
     }
     
     public static void main(String[] args) {
-        // 测试用例：5,[1,3,-1,-1,-1],[2,-1,4,-1,-1],[5,3,2,4,7]
-        // 预期输出：[21, 7, 9, 4, 7]
         int n = 5;
         int[] left = {1, 3, -1, -1, -1};
         int[] right = {2, -1, 4, -1, -1};
         int[] base = {5, 3, 2, 4, 7};
-        
+        // 预期输出：[21, 7, 9, 4, 7]
         System.out.println(solve(n, left, right, base));
     }
 }
